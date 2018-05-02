@@ -45,8 +45,8 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
 			define('CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH', plugin_dir_path(__FILE__) . 'includes/');
 			define('CUSTOM_POST_TYPE_PLUS_PLUGIN_URL', plugin_dir_url(__FILE__));
 			
-			register_activation_hook( __FILE__, array( 'Custom_Post_Type_Plus', 'activation_hook' ) );
-			register_deactivation_hook( __FILE__, array( 'Custom_Post_Type_Plus', 'deactivation_hook' ) );
+			register_activation_hook( __FILE__, array( $this, 'activation_hook' ) );
+			register_deactivation_hook( __FILE__, array( $this, 'deactivation_hook' ) );
 
 			$this->include_files();
 
@@ -84,20 +84,20 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
 		}
     }
 
-    /**
-     * Main instance of Custom_Post_Type_Plus_Instance.
-     *
-     * @since
-     * @return
-     */
-    function custom_post_type_plus_instance()
-    {
-        return Custom_Post_Type_Plus::instance();
-    }
+	/**
+	 * Main instance of Custom_Post_Type_Plus_Instance.
+	 *
+	 * @since
+	 * @return Custom_Post_Type_Plus
+	 */
+	function custom_post_type_plus_instance()
+	{
+		return Custom_Post_Type_Plus::instance();
+	}
 
-    /*
-     * Global for backwards compatibility.
-     */
-    $GLOBALS['custom_post_type_plus_instance'] = custom_post_type_plus_instance();
+	/*
+	 * Global for backwards compatibility.
+	 */
+	$GLOBALS['custom_post_type_plus_instance'] = custom_post_type_plus_instance();
 
 endif;

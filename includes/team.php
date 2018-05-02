@@ -109,7 +109,7 @@ class Custom_Post_Type_Plus_Team {
 		);
 	}
 
-	static function team_shortcode( $atts ) {
+	public function team_shortcode( $atts ) {
 
 		$atts = shortcode_atts( array(
 				'category'	=> false,
@@ -191,14 +191,6 @@ class Custom_Post_Type_Plus_Team {
     function settings_api_init() {
     }
 
-	/**
-	 * On plugin/theme activation, check if current theme supports CPTP
-	 */
-	static function activation_post_type_support() {
-
-		$this->flush_rules_on_enable();
-	}
-
 	function theme_supports_custom_post_type() {
 		if ( current_theme_supports( self::CUSTOM_POST_TYPE ) ) {
 			return true;
@@ -209,7 +201,7 @@ class Custom_Post_Type_Plus_Team {
 	/*
 	 * Flush permalinks when supported theme is activated
 	 */
-	function flush_rules_on_switch() {
+	public function flush_rules_on_switch() {
 		if ( $this->theme_supports_custom_post_type() ) {
 			flush_rewrite_rules();
 		}
