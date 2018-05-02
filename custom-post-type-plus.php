@@ -45,12 +45,10 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
 			define('CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH', plugin_dir_path(__FILE__) . 'includes/');
 			define('CUSTOM_POST_TYPE_PLUS_PLUGIN_URL', plugin_dir_url(__FILE__));
 			
-			register_activation_hook( __FILE__, array( $this, 'activation_hook' ) );
-			register_deactivation_hook( __FILE__, array( $this, 'deactivation_hook' ) );
-
 			$this->include_files();
 
-            add_action('plugins_loaded', array($this, 'custom_post_type_plus_plugins_loaded'));
+            add_action('plugins_loaded', array($this, 'plugins_loaded'));
+			add_action('init', array($this, 'maybe_flush_rewrite_rules'));
         }
 
         /**
@@ -59,10 +57,9 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
          * @access public
          * @return void
          */
-        function custom_post_type_plus_plugins_loaded()
+        public function plugins_loaded()
         {
             load_plugin_textdomain('custom-post-type-plus', false, basename(dirname(__FILE__)) . '/languages/');
-
         }
 
         public function include_files()
@@ -70,17 +67,21 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
             /*
             * Include Custom Post Types
             */
-            include_once CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'team.php';
-            include_once CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'portfolio.php';
-            include_once CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'testimonial.php';
+            include CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'team.php';
+            include CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'portfolio.php';
+            include CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'testimonial.php';
+
         }
-		
-		public function activation_hook() {
-			flush_rewrite_rules();
+
+		public static function activation() {
+			update_option( 'custom_post_type_plus_flush_rewrite_rules', '1' );
 		}
-		
-		public function deactivation_hook() {
-			flush_rewrite_rules();
+
+		public function maybe_flush_rewrite_rules() {
+			if ( get_option( 'custom_post_type_plus_flush_rewrite_rules', '0' ) === '1' ) {
+				flush_rewrite_rules();
+				delete_option('custom_post_type_plus_flush_rewrite_rules');
+			}
 		}
     }
 
@@ -99,5 +100,7 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
 	 * Global for backwards compatibility.
 	 */
 	$GLOBALS['custom_post_type_plus_instance'] = custom_post_type_plus_instance();
+
+	register_activation_hook( __FILE__, array( 'Custom_Post_Type_Plus', 'activation' ) );
 
 endif;
