@@ -64,6 +64,8 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
 
         public function include_files()
         {
+			
+			include CUSTOM_POST_TYPE_PLUS_PATH . 'functions.php';
             /*
             * Include Custom Post Types
             */

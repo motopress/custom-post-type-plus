@@ -151,7 +151,7 @@ class Custom_Post_Type_Plus_Portfolio {
 			while ( $query->have_posts() ) :
 
 				$query->the_post();
-				get_template_part( 'template-parts/content', 'portfolio-shortcode' );
+				get_template_part( 'template-parts/content-portfolio', 'shortcode' );
 
 			endwhile;
 

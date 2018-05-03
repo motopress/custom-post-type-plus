@@ -114,12 +114,20 @@ class Custom_Post_Type_Plus_Team {
 		$atts = shortcode_atts( array(
 				'category'	=> false,
 				'columns'	=> 1,
-			), $atts, self::CUSTOM_POST_TYPE
+				'order'		=> 'asc',
+				'orderby'	=> 'date',
+				'showposts'	=> false,
+			),
+			$atts, self::CUSTOM_POST_TYPE
 		);
 
 		$atts['columns'] = absint( $atts['columns'] );
+		$atts['showposts'] = intval( $atts['showposts'] );
 
-		$default = array();
+		$default = array(
+			'order'          => $atts['order'],
+			'orderby'        => $atts['orderby'],
+		);
 		$exclude = '';
 		
 		if ( is_singular( self::CUSTOM_POST_TYPE ) ) {
@@ -129,6 +137,8 @@ class Custom_Post_Type_Plus_Team {
 		$args = wp_parse_args( $atts, $default );
 		$args['post_type'] = self::CUSTOM_POST_TYPE;
 	    $args['post__not_in'] = $exclude;
+		$args['paged'] = cptp_get_paged_query_var();
+		$args['posts_per_page'] = $atts['showposts'];
 
 		if ( false != $atts['category'] ) {
 			$args['tax_query'] = array();
@@ -151,11 +161,19 @@ class Custom_Post_Type_Plus_Team {
 			while ( $query->have_posts() ) :
 
 				$query->the_post();
-				get_template_part( 'template-parts/content', 'team-shortcode' );
+				get_template_part( 'template-parts/content-team', 'shortcode' );
 
 			endwhile;
 
 			do_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), $atts );
+
+			$big = 999999999; // need an unlikely integer
+			echo paginate_links( array(
+			   'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+			   'format' => '?paged=%#%',
+			   'current' => max( 1, get_query_var('paged') ),
+			   'total' => $query->max_num_pages //$q is your custom query
+			 ) );
 
 		}
 
