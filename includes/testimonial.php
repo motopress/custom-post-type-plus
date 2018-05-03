@@ -121,15 +121,9 @@ class Custom_Post_Type_Plus_Testimonial {
 		$atts['columns'] = absint( $atts['columns'] );
 
 		$default = array();
-		$exclude = '';
-		
-		if ( is_singular( self::CUSTOM_POST_TYPE ) ) {
-		    $exclude = array( get_the_ID() );
-	    }
 
 		$args = wp_parse_args( $atts, $default );
 		$args['post_type'] = self::CUSTOM_POST_TYPE;
-	    $args['post__not_in'] = $exclude;
 
 		if ( false != $atts['category'] ) {
 			$args['tax_query'] = array();
