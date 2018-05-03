@@ -27,6 +27,7 @@ class Custom_Post_Type_Plus_Testimonial {
 
 		add_action( sprintf( '%s_shortcode_before', self::OPTION_NAME ), array( $this, 'shortcode_before'), 10, 1);
 		add_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), array( $this, 'shortcode_after'), 10, 1);
+		add_action( sprintf( '%s_shortcode_pagination', self::OPTION_NAME ), array( $this, 'shortcode_pagination'), 10, 1);
 	}
 
 	public static function instance() {
@@ -155,6 +156,8 @@ class Custom_Post_Type_Plus_Testimonial {
 
 			endwhile;
 
+			do_action( sprintf( '%s_shortcode_pagination', self::OPTION_NAME ), $query );
+
 			do_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), $atts );
 
 		}
@@ -175,6 +178,10 @@ class Custom_Post_Type_Plus_Testimonial {
 		?>
 		</div>
 		<?php
+	}
+
+	public function shortcode_pagination( $query ) {
+		cptp_render_pagination( $query );
 	}
 
 	/**

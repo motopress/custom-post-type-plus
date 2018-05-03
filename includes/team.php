@@ -27,6 +27,7 @@ class Custom_Post_Type_Plus_Team {
 
 		add_action( sprintf( '%s_shortcode_before', self::OPTION_NAME ), array( $this, 'shortcode_before'), 10, 1);
 		add_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), array( $this, 'shortcode_after'), 10, 1);
+		add_action( sprintf( '%s_shortcode_pagination', self::OPTION_NAME ), array( $this, 'shortcode_pagination'), 10, 1);
 	}
 
 	public static function instance() {
@@ -128,15 +129,9 @@ class Custom_Post_Type_Plus_Team {
 			'order'          => $atts['order'],
 			'orderby'        => $atts['orderby'],
 		);
-		$exclude = '';
-		
-		if ( is_singular( self::CUSTOM_POST_TYPE ) ) {
-		    $exclude = array( get_the_ID() );
-	    }
 
 		$args = wp_parse_args( $atts, $default );
 		$args['post_type'] = self::CUSTOM_POST_TYPE;
-	    $args['post__not_in'] = $exclude;
 		$args['paged'] = cptp_get_paged_query_var();
 		$args['posts_per_page'] = $atts['showposts'];
 
@@ -165,16 +160,9 @@ class Custom_Post_Type_Plus_Team {
 
 			endwhile;
 
+			do_action( sprintf( '%s_shortcode_pagination', self::OPTION_NAME ), $query );
+
 			do_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), $atts );
-
-			$big = 999999999; // need an unlikely integer
-			echo paginate_links( array(
-			   'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-			   'format' => '?paged=%#%',
-			   'current' => max( 1, get_query_var('paged') ),
-			   'total' => $query->max_num_pages //$q is your custom query
-			 ) );
-
 		}
 
 		$html = ob_get_clean();
@@ -193,6 +181,10 @@ class Custom_Post_Type_Plus_Team {
 		?>
 		</div>
 		<?php
+	}
+	
+	public function shortcode_pagination( $query ) {
+		cptp_render_pagination( $query );
 	}
 
 	/**

@@ -27,6 +27,7 @@ class Custom_Post_Type_Plus_Portfolio {
 
 		add_action( sprintf( '%s_shortcode_before', self::OPTION_NAME ), array( $this, 'shortcode_before'), 10, 1);
 		add_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), array( $this, 'shortcode_after'), 10, 1);
+		add_action( sprintf( '%s_shortcode_pagination', self::OPTION_NAME ), array( $this, 'shortcode_pagination'), 10, 1);
 	}
 
 	public static function instance() {
@@ -120,15 +121,9 @@ class Custom_Post_Type_Plus_Portfolio {
 		$atts['columns'] = absint( $atts['columns'] );
 
 		$default = array();
-		$exclude = '';
 		
-		if ( is_singular( self::CUSTOM_POST_TYPE ) ) {
-		    $exclude = array( get_the_ID() );
-	    }
-
 		$args = wp_parse_args( $atts, $default );
 		$args['post_type'] = self::CUSTOM_POST_TYPE;
-	    $args['post__not_in'] = $exclude;
 
 		if ( false != $atts['category'] ) {
 			$args['tax_query'] = array();
@@ -155,8 +150,9 @@ class Custom_Post_Type_Plus_Portfolio {
 
 			endwhile;
 
-			do_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), $atts );
+			do_action( sprintf( '%s_shortcode_pagination', self::OPTION_NAME ), $query );
 
+			do_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), $atts );
 		}
 
 		$html = ob_get_clean();
@@ -175,6 +171,10 @@ class Custom_Post_Type_Plus_Portfolio {
 		?>
 		</div>
 		<?php
+	}
+	
+	public function shortcode_pagination( $query ) {
+		cptp_render_pagination( $query );
 	}
 
 	/**
