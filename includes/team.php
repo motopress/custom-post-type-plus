@@ -69,7 +69,7 @@ class Custom_Post_Type_Plus_Team {
 			'hierarchical' => false,
 			'rewrite' => array( 'slug' => 'team', 'with_front' => true ),
 			'query_var' => true,
-			'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author', 'page-attributes' ),
+			'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions', 'page-attributes' ),
 		);
 
 		register_post_type(
@@ -113,9 +113,10 @@ class Custom_Post_Type_Plus_Team {
 	public function team_shortcode( $atts ) {
 
 		$atts = shortcode_atts( array(
+				'ids'		=> '',
 				'category'	=> false,
 				'columns'	=> 1,
-				'order'		=> 'asc',
+				'order'		=> 'DESC',
 				'orderby'	=> 'date',
 				'showposts'	=> false,
 			),
@@ -135,7 +136,9 @@ class Custom_Post_Type_Plus_Team {
 		$args['paged'] = cptp_get_paged_query_var();
 		$args['posts_per_page'] = $atts['showposts'];
 
-		if ( false != $atts['category'] ) {
+		if ( !empty($atts['ids']) ) {
+			$args['post__in'] = array_map( 'trim', explode( ',', $atts['ids'] ) );
+		} else if ( false != $atts['category'] ) {
 			$args['tax_query'] = array();
 			array_push( $args['tax_query'], array(
 				'taxonomy' => self::CUSTOM_TAXONOMY_TYPE,

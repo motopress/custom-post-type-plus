@@ -69,7 +69,7 @@ class Custom_Post_Type_Plus_Portfolio {
 			'hierarchical' => false,
 			'rewrite' => array( 'slug' => 'portfolio', 'with_front' => true ),
 			'query_var' => true,
-			'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'author', 'page-attributes' ),
+			'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions', 'author', 'page-attributes' ),
 		);
 
 		register_post_type(
@@ -113,19 +113,31 @@ class Custom_Post_Type_Plus_Portfolio {
 	public function portfolio_shortcode( $atts ) {
 
 		$atts = shortcode_atts( array(
+				'ids'		=> '',
 				'category'	=> false,
 				'columns'	=> 1,
+				'order'		=> 'DESC',
+				'orderby'	=> 'date',
+				'showposts'	=> false,
 			), $atts, self::CUSTOM_POST_TYPE
 		);
 
 		$atts['columns'] = absint( $atts['columns'] );
+		$atts['showposts'] = intval( $atts['showposts'] );
 
-		$default = array();
+		$default = array(
+			'order'          => $atts['order'],
+			'orderby'        => $atts['orderby'],
+		);
 		
 		$args = wp_parse_args( $atts, $default );
 		$args['post_type'] = self::CUSTOM_POST_TYPE;
+		$args['paged'] = cptp_get_paged_query_var();
+		$args['posts_per_page'] = $atts['showposts'];
 
-		if ( false != $atts['category'] ) {
+		if ( !empty($atts['ids']) ) {
+			$args['post__in'] = array_map( 'trim', explode( ',', $atts['ids'] ) );
+		} else if ( false != $atts['category'] ) {
 			$args['tax_query'] = array();
 			array_push( $args['tax_query'], array(
 				'taxonomy' => self::CUSTOM_TAXONOMY_TYPE,
