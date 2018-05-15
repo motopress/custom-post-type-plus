@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Hotel Booking\n"
-"POT-Creation-Date: 2018-05-02 11:40+0300\n"
+"POT-Creation-Date: 2018-05-15 12:04+0300\n"
 "PO-Revision-Date: 2017-02-10 17:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,13 +20,13 @@ msgstr ""
 "X-Poedit-Flags-xgettext: --add-comments\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: includes/portfolio.php:48 includes/portfolio.php:49
-#: includes/portfolio.php:53
-msgid "Portfolio"
+#: functions.php:48
+msgid "Pagination"
 msgstr ""
 
-#: includes/portfolio.php:55
-msgid "Portfolio post type description."
+#: includes/portfolio.php:49 includes/portfolio.php:50
+#: includes/portfolio.php:54
+msgid "Portfolio"
 msgstr ""
 
 #: includes/portfolio.php:84 includes/portfolio.php:89 includes/team.php:84
@@ -39,24 +39,16 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: includes/team.php:48 includes/team.php:49 includes/team.php:53
+#: includes/team.php:49 includes/team.php:50 includes/team.php:54
 msgid "Team"
 msgstr ""
 
-#: includes/team.php:55
-msgid "Team post type description."
-msgstr ""
-
-#: includes/testimonial.php:48 includes/testimonial.php:53
+#: includes/testimonial.php:49 includes/testimonial.php:54
 msgid "Testimonials"
 msgstr ""
 
-#: includes/testimonial.php:49
+#: includes/testimonial.php:50
 msgid "Testimonial"
-msgstr ""
-
-#: includes/testimonial.php:55
-msgid "Testimonials post type description."
 msgstr ""
 
 #. Plugin Name of the plugin/theme

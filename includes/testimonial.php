@@ -53,7 +53,6 @@ class Custom_Post_Type_Plus_Testimonial {
 		$args = array(
 			'label' => __( 'Testimonials', 'custom-post-type-plus' ),
 			'labels' => $labels,
-			'description' => __( 'Testimonials post type description.', 'custom-post-type-plus' ),
 			'public' => true,
 			'publicly_queryable' => true,
 			'show_ui' => true,

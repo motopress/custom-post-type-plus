@@ -53,7 +53,6 @@ class Custom_Post_Type_Plus_Team {
 		$args = array(
 			'label' => __( 'Team', 'custom-post-type-plus' ),
 			'labels' => $labels,
-			'description' => __( 'Team post type description.', 'custom-post-type-plus' ),
 			'public' => true,
 			'publicly_queryable' => true,
 			'show_ui' => true,
