@@ -9,6 +9,8 @@ class Custom_Post_Type_Plus_Testimonial {
 	private static $_instance = null;
 
 	public function __construct() {
+		
+		add_action( 'import_start', array( $this, 'register_post_types' ) );
 
         if ( ! $this->theme_supports_custom_post_type() ) {
 			return;
@@ -40,7 +42,7 @@ class Custom_Post_Type_Plus_Testimonial {
 	/**
 	 * Register Testimonial Post Type
 	 */
-	function register_post_types() {
+	public function register_post_types() {
 
 		/**
 		 * Custom Post Type: Testimonial

@@ -9,6 +9,8 @@ class Custom_Post_Type_Plus_Portfolio {
 	private static $_instance = null;
 
 	public function __construct() {
+		
+		add_action( 'import_start', array( $this, 'register_post_types' ) );
 
         if ( ! $this->theme_supports_custom_post_type() ) {
 			return;
@@ -40,7 +42,7 @@ class Custom_Post_Type_Plus_Portfolio {
 	/**
 	 * Register Portfolio Post Type
 	 */
-	function register_post_types() {
+	public function register_post_types() {
 
 		/**
 		 * Custom Post Type: Portfolio
@@ -221,108 +223,3 @@ class Custom_Post_Type_Plus_Portfolio {
 }
 
 add_action( 'init', array( 'Custom_Post_Type_Plus_Portfolio', 'instance' ) );
-
-/*
-function emmetnextengine_portfolio_shortcode( $atts ) {
-    // not working yet
-    $atts = shortcode_atts( array(
-        'category'	=> false,
-        'columns'	=> 1,
-    ), $atts, 'portfolio' );
-
-    $atts['columns'] = absint( $atts['columns'] );
-
-    $default = array(
-    );
-    $exclude = '';
-    if(is_singular('portfolio')){
-        $exclude = array(get_the_ID());
-    }
-
-
-
-    $args = wp_parse_args( $atts, $default );
-    $args['post_type'] = 'portfolio';
-    $args['post__not_in'] = $exclude;
-
-    if ( false != $atts['category'] ) {
-        $args['tax_query'] = array();
-        array_push( $args['tax_query'], array(
-            'taxonomy' => 'portfolio_category',
-            'field'    => 'slug',
-            'terms'    => $atts['category'],
-        ) );
-    }
-
-    $html = '';
-    $query = new WP_Query($args	);
-
-    ob_start();
-
-    if ( $query->have_posts() ) {
-        ?>
-
-        <div class="portfolio-shortcode column-<?php echo esc_attr( $atts['columns'] ); ?>">
-
-            <?php
-            while ( $query->have_posts() ) :
-
-                $query->the_post();
-                emmetnextengine_get_template_part('template-parts/content', 'portfolio-single');
-
-            endwhile;
-            ?>
-
-        </div>
-        <?php
-    }
-
-    $html = ob_get_clean();
-
-    wp_reset_postdata();
-    return $html;
-}
-
-add_shortcode('portfolio-menu', 'emmetnextengine_portfolio_menu_shortcode' );
-
-function emmetnextengine_portfolio_menu_shortcode( $atts ) {
-
-// need some atts for this shortcode
-
-    $categories = get_terms(array(
-        'taxonomy' => 'portfolio_category',
-        'hide_empty' => true,
-    ));
-
-
-    $html = '';
-    ob_start();
-
-    if($categories)  {
-        ?>
-
-        <div class="portfolio-menu-shortcode">
-            <ul class="portfolio-categories-menu">
-                <li class="current"><?php echo __('All', 'emmet-next');?></li>
-                <?php
-                foreach ($categories as $category){
-                    ?>
-                    <li>
-                        <a href="<?php echo get_term_link($category, 'portfolio_category'); ?>"><?php echo $category->name;?></a>
-                    </li>
-                    <?php
-                }
-                ?>
-            </ul>
-
-        </div>
-        <?php
-    }
-
-    $html = ob_get_clean();
-
-    wp_reset_postdata();
-    return $html;
-}
-
-*/
