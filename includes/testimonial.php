@@ -1,6 +1,6 @@
 <?php
 
-class Custom_Post_Type_Plus_Testimonial {
+class Custom_Post_Type_Plus_Testimonial  extends Custom_Post_Type_Plus_Base {
 
 	const CUSTOM_POST_TYPE       = 'cptp-testimonial';
 	const CUSTOM_TAXONOMY_TYPE   = 'cptp-testimonial-category';
@@ -10,7 +10,7 @@ class Custom_Post_Type_Plus_Testimonial {
 
 	public function __construct() {
 		
-		add_action( 'import_start', array( $this, 'register_post_types' ) );
+		parent::__construct();
 
         if ( ! $this->theme_supports_custom_post_type() ) {
 			return;
@@ -21,7 +21,6 @@ class Custom_Post_Type_Plus_Testimonial {
 
 		$this->register_post_types();
 
-		add_action( 'after_switch_theme', array( $this, 'flush_rules_on_switch' ) );
 		//add_action( 'customize_register', array( $this, 'customize_register' ) );
 
 		// Register shortcodes
@@ -50,10 +49,11 @@ class Custom_Post_Type_Plus_Testimonial {
 		$labels = array(
 			'name' => __( 'Testimonials', 'custom-post-type-plus' ),
 			'singular_name' => __( 'Testimonial', 'custom-post-type-plus' ),
+			'singular_name' => __( 'Add New Testimonial', 'custom-post-type-plus' ),
+			'all_items' => __( 'All Testimonials', 'custom-post-type-plus' ),
 		);
 
 		$args = array(
-			'label' => __( 'Testimonials', 'custom-post-type-plus' ),
 			'labels' => $labels,
 			'public' => true,
 			'publicly_queryable' => true,
@@ -68,7 +68,10 @@ class Custom_Post_Type_Plus_Testimonial {
 			'capability_type' => 'post',
 			'map_meta_cap' => true,
 			'hierarchical' => false,
-			'rewrite' => array( 'slug' => 'testimonial', 'with_front' => true ),
+			'rewrite' => array(
+				'slug' => 'testimonial',
+				'with_front' => false,
+			),
 			'query_var' => true,
 			'supports' => array( 'title', 'editor', 'thumbnail', 'excerpt', 'page-attributes' ),
 		);
@@ -83,25 +86,28 @@ class Custom_Post_Type_Plus_Testimonial {
 		 */
 
 		$labels = array(
-			'name' => __( 'Categories', 'custom-post-type-plus' ),
+			'name' => __( 'Testimonial Categories', 'custom-post-type-plus' ),
 			'singular_name' => __( 'Category', 'custom-post-type-plus' ),
+			'menu_name' => _x( 'Categories', 'Admin menu name', 'custom-post-type-plus' ),
 		);
 
 		$args = array(
-			'label' => __( 'Categories', 'custom-post-type-plus' ),
 			'labels' => $labels,
 			'public' => true,
 			'hierarchical' => true,
-			'label' => 'Categories',
 			'show_ui' => true,
 			'show_in_menu' => true,
 			'show_in_nav_menus' => true,
 			'query_var' => true,
-			'rewrite' => array( 'slug' => 'testimonial-category', 'with_front' => true, ),
-			'show_admin_column' => false,
+			'rewrite' => array(
+				'slug' => 'testimonial-category',
+				'with_front' => false,
+				'hierarchical' => true,
+			),
+			'show_admin_column' => true,
 			'show_in_rest' => false,
 			'rest_base' => 'testimonial_category',
-			'show_in_quick_edit' => false,
+			'show_in_quick_edit' => true,
 		);
 
 		register_taxonomy(
@@ -204,22 +210,6 @@ class Custom_Post_Type_Plus_Testimonial {
 	 */
     function settings_api_init() {
     }
-
-	function theme_supports_custom_post_type() {
-		if ( current_theme_supports( self::CUSTOM_POST_TYPE ) ) {
-			return true;
-		}
-		return false;
-	}
-
-	/*
-	 * Flush permalinks when supported theme is activated
-	 */
-	public function flush_rules_on_switch() {
-		if ( $this->theme_supports_custom_post_type() ) {
-			flush_rewrite_rules();
-		}
-	}
 
 }
 

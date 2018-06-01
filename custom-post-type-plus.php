@@ -3,7 +3,7 @@
  * Plugin Name: Custom Post Type Plus
  * Plugin URI:  https://motopress.com
  * Description: This plugin lets you add several custom post types in your WordPress.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      MotoPress
  * Author URI:  https://motopress.com
  * Text Domain: custom-post-type-plus
@@ -69,9 +69,12 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
             /*
             * Include Custom Post Types
             */
+			include CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'base.php';
+
             include CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'team.php';
             include CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'portfolio.php';
             include CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'testimonial.php';
+            include CUSTOM_POST_TYPE_PLUS_INCLUDES_PATH . 'activity.php';
 
         }
 

@@ -1,15 +1,15 @@
 <?php
 
-class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
+class Custom_Post_Type_Plus_Activity extends Custom_Post_Type_Plus_Base {
 
-	const CUSTOM_POST_TYPE       = 'cptp-portfolio';
-	const CUSTOM_TAXONOMY_TYPE   = 'cptp-portfolio-category';
-	const OPTION_NAME            = 'cptp_portfolio';
+	const CUSTOM_POST_TYPE       = 'cptp-activity';
+	const CUSTOM_TAXONOMY_TYPE   = 'cptp-activity-category';
+	const OPTION_NAME            = 'cptp_activity';
 
 	private static $_instance = null;
 
 	public function __construct() {
-		
+
 		parent::__construct();
 
         if ( ! $this->theme_supports_custom_post_type() ) {
@@ -24,7 +24,7 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 		//add_action( 'customize_register', array( $this, 'customize_register' ) );
 
 		// Register shortcodes
-		add_shortcode( 'portfolio', array( $this, 'portfolio_shortcode' ) );
+		add_shortcode( 'activities', array( $this, 'activities_shortcode' ) );
 
 		add_action( sprintf( '%s_shortcode_before', self::OPTION_NAME ), array( $this, 'shortcode_before'), 10, 1);
 		add_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), array( $this, 'shortcode_after'), 10, 1);
@@ -39,17 +39,18 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 	}
 
 	/**
-	 * Register Portfolio Post Type
+	 * Register Activity Post Type
 	 */
 	public function register_post_types() {
 
 		/**
-		 * Custom Post Type: Portfolio
+		 * Custom Post Type: Activity
 		 */
 		$labels = array(
-			'name' => __( 'Portfolio', 'custom-post-type-plus' ),
-			'singular_name' => __( 'Portfolio', 'custom-post-type-plus' ),
-			'all_items' => __( 'All Portfolio', 'custom-post-type-plus' ),
+			'name' => __( 'Activities', 'custom-post-type-plus' ),
+			'singular_name' => __( 'Activity', 'custom-post-type-plus' ),
+			'add_new_item' => __( 'Add New Activity', 'custom-post-type-plus' ),
+			'all_items' => __( 'All Activities', 'custom-post-type-plus' ),
 		);
 
 		$args = array(
@@ -61,14 +62,14 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 			'rest_base' => '',
 			'has_archive' => true,
 			'show_in_menu' => true,
-			'menu_icon' => 'dashicons-portfolio',
+			'menu_icon' => 'dashicons-admin-page',
 			'show_in_nav_menus' => true,
 			'exclude_from_search' => false,
 			'capability_type' => 'post',
 			'map_meta_cap' => true,
 			'hierarchical' => false,
 			'rewrite' => array(
-				'slug' => 'portfolio',
+				'slug' => 'activity',
 				'with_front' => false,
 			),
 			'query_var' => true,
@@ -85,7 +86,7 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 		 */
 
 		$labels = array(
-			'name' => __( 'Portfolio Categories', 'custom-post-type-plus' ),
+			'name' => __( 'Activity Categories', 'custom-post-type-plus' ),
 			'singular_name' => __( 'Category', 'custom-post-type-plus' ),
 			'menu_name' => _x( 'Categories', 'Admin menu name', 'custom-post-type-plus' ),
 		);
@@ -99,13 +100,13 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 			'show_in_nav_menus' => true,
 			'query_var' => true,
 			'rewrite' => array(
-				'slug' => 'portfolio-category',
+				'slug' => 'activity-category',
 				'with_front' => false,
 				'hierarchical' => true,
 			),
 			'show_admin_column' => true,
 			'show_in_rest' => false,
-			'rest_base' => 'portfolio_category',
+			'rest_base' => 'activity_category',
 			'show_in_quick_edit' => true,
 		);
 
@@ -116,7 +117,7 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 		);
 	}
 
-	public function portfolio_shortcode( $atts ) {
+	public function activities_shortcode( $atts ) {
 
 		$atts = shortcode_atts( array(
 				'ids'		=> '',
@@ -135,7 +136,7 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 			'order'          => $atts['order'],
 			'orderby'        => $atts['orderby'],
 		);
-		
+
 		$args = wp_parse_args( $atts, $default );
 		$args['post_type'] = self::CUSTOM_POST_TYPE;
 		$args['paged'] = cptp_get_paged_query_var();
@@ -164,13 +165,14 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 			while ( $query->have_posts() ) :
 
 				$query->the_post();
-				get_template_part( 'template-parts/content-portfolio', 'shortcode' );
+				get_template_part( 'template-parts/content-activity', 'shortcode' );
 
 			endwhile;
 
 			do_action( sprintf( '%s_shortcode_pagination', self::OPTION_NAME ), $query );
 
 			do_action( sprintf( '%s_shortcode_after', self::OPTION_NAME ), $atts );
+
 		}
 
 		$html = ob_get_clean();
@@ -178,19 +180,19 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 
 		return $html;
 	}
-	
+
 	public function shortcode_before( $atts ) {
 		?>
-		<div class="portfolio-wrapper columns-<?php echo esc_attr( $atts['columns'] ); ?>">
+		<div class="activities-wrapper columns-<?php echo esc_attr( $atts['columns'] ); ?>">
 		<?php
 	}
-	
+
 	public function shortcode_after( $atts ) {
 		?>
 		</div>
 		<?php
 	}
-	
+
 	public function shortcode_pagination( $query ) {
 		cptp_render_pagination( $query );
 	}
@@ -211,4 +213,4 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 
 }
 
-add_action( 'init', array( 'Custom_Post_Type_Plus_Portfolio', 'instance' ) );
+add_action( 'init', array( 'Custom_Post_Type_Plus_Activity', 'instance' ) );
