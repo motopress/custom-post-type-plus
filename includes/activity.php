@@ -12,7 +12,7 @@ class Custom_Post_Type_Plus_Activity extends Custom_Post_Type_Plus_Base {
 
 		parent::__construct();
 
-        if ( ! $this->theme_supports_custom_post_type() ) {
+        if ( ! $this->site_supports_custom_post_type() ) {
 			return;
 		}
 
@@ -50,7 +50,7 @@ class Custom_Post_Type_Plus_Activity extends Custom_Post_Type_Plus_Base {
 			'name' => __( 'Activities', 'custom-post-type-plus' ),
 			'singular_name' => __( 'Activity', 'custom-post-type-plus' ),
 			'add_new_item' => __( 'Add New Activity', 'custom-post-type-plus' ),
-			'all_items' => __( 'All Activities', 'custom-post-type-plus' ),
+			'all_items' => __( 'Activities', 'custom-post-type-plus' ),
 		);
 
 		$args = array(
@@ -165,7 +165,7 @@ class Custom_Post_Type_Plus_Activity extends Custom_Post_Type_Plus_Base {
 			while ( $query->have_posts() ) :
 
 				$query->the_post();
-				get_template_part( 'template-parts/content-activity', 'shortcode' );
+				cptp_get_template_part( 'template-parts/content-activity', 'shortcode' );
 
 			endwhile;
 

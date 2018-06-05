@@ -70,3 +70,45 @@ function cptp_pagination_markup( $links, $class = '', $screen_reader_text = '' )
 
 	return sprintf( $template, esc_attr( $class ), esc_html( $screen_reader_text ), $links );
 }
+
+function cptp_get_template_part( $slug, $name = null ) {
+	/**
+	 * Fires before the specified template part file is loaded.
+	 */
+	do_action( "get_template_part_{$slug}", $slug, $name );
+
+	$templates = array();
+	$name = (string) $name;
+	if ( '' !== $name )
+		$templates[] = "{$slug}-{$name}.php";
+
+	$templates[] = "{$slug}.php";
+	$templates[] = "templates/default.php";
+
+	$templates = apply_filters('cptp_get_template_part_templates', $templates, $slug, $name);
+
+	cptp_locate_template($templates, true, false);
+}
+
+function cptp_locate_template($template_names, $load = false, $require_once = true ) {
+	$located = '';
+	foreach ( (array) $template_names as $template_name ) {
+		if ( !$template_name )
+			continue;
+		if ( file_exists(STYLESHEETPATH . '/' . $template_name)) {
+			$located = STYLESHEETPATH . '/' . $template_name;
+			break;
+		} elseif ( file_exists(TEMPLATEPATH . '/' . $template_name) ) {
+			$located = TEMPLATEPATH . '/' . $template_name;
+			break;
+		} elseif ( file_exists( CUSTOM_POST_TYPE_PLUS_PATH . $template_name ) ) {
+			$located = CUSTOM_POST_TYPE_PLUS_PATH . $template_name;
+			break;
+		}
+	}
+
+	if ( $load && '' != $located )
+		load_template( $located, $require_once );
+
+	return $located;
+}

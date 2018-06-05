@@ -12,7 +12,7 @@ class Custom_Post_Type_Plus_Team extends Custom_Post_Type_Plus_Base {
 		
 		parent::__construct();
 
-        if ( ! $this->theme_supports_custom_post_type() ) {
+        if ( ! $this->site_supports_custom_post_type() ) {
 			return;
 		}
 
@@ -49,7 +49,7 @@ class Custom_Post_Type_Plus_Team extends Custom_Post_Type_Plus_Base {
 		$labels = array(
 			'name' => __( 'Team', 'custom-post-type-plus' ),
 			'singular_name' => __( 'Team', 'custom-post-type-plus' ),
-			'all_items' => __( 'All Team', 'custom-post-type-plus' ),
+			'all_items' => __( 'Team', 'custom-post-type-plus' ),
 		);
 
 		$args = array(
@@ -165,7 +165,7 @@ class Custom_Post_Type_Plus_Team extends Custom_Post_Type_Plus_Base {
 			while ( $query->have_posts() ) :
 
 				$query->the_post();
-				get_template_part( 'template-parts/content-team', 'shortcode' );
+				cptp_get_template_part( 'template-parts/content-team', 'shortcode' );
 
 			endwhile;
 

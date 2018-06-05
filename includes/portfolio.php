@@ -12,7 +12,7 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 		
 		parent::__construct();
 
-        if ( ! $this->theme_supports_custom_post_type() ) {
+        if ( ! $this->site_supports_custom_post_type() ) {
 			return;
 		}
 
@@ -49,7 +49,7 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 		$labels = array(
 			'name' => __( 'Portfolio', 'custom-post-type-plus' ),
 			'singular_name' => __( 'Portfolio', 'custom-post-type-plus' ),
-			'all_items' => __( 'All Portfolio', 'custom-post-type-plus' ),
+			'all_items' => __( 'Portfolio', 'custom-post-type-plus' ),
 		);
 
 		$args = array(
@@ -164,7 +164,7 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 			while ( $query->have_posts() ) :
 
 				$query->the_post();
-				get_template_part( 'template-parts/content-portfolio', 'shortcode' );
+				cptp_get_template_part( 'template-parts/content-portfolio', 'shortcode' );
 
 			endwhile;
 
@@ -212,3 +212,4 @@ class Custom_Post_Type_Plus_Portfolio extends Custom_Post_Type_Plus_Base {
 }
 
 add_action( 'init', array( 'Custom_Post_Type_Plus_Portfolio', 'instance' ) );
+register_activation_hook( __FILE__, array( 'Custom_Post_Type_Plus_Portfolio', 'activation_post_type_support' ) );
