@@ -88,6 +88,10 @@ if ( !class_exists('Custom_Post_Type_Plus') ) :
 				delete_option('custom_post_type_plus_flush_rewrite_rules');
 			}
 		}
+		
+		public static function get_default_template() {
+			return 'templates/default.php';
+		}
     }
 
 	/**

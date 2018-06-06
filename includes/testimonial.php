@@ -1,6 +1,6 @@
 <?php
 
-class Custom_Post_Type_Plus_Testimonial  extends Custom_Post_Type_Plus_Base {
+class Custom_Post_Type_Plus_Testimonial extends Custom_Post_Type_Plus_Base {
 
 	const CUSTOM_POST_TYPE       = 'cptp-testimonial';
 	const CUSTOM_TAXONOMY_TYPE   = 'cptp-testimonial-category';

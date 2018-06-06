@@ -83,14 +83,14 @@ function cptp_get_template_part( $slug, $name = null ) {
 		$templates[] = "{$slug}-{$name}.php";
 
 	$templates[] = "{$slug}.php";
-	$templates[] = "templates/default.php";
+	$templates[] = Custom_Post_Type_Plus::get_default_template();
 
 	$templates = apply_filters('cptp_get_template_part_templates', $templates, $slug, $name);
 
-	cptp_locate_template($templates, true, false);
+	cptp_locate_template($templates, true, false, $slug, $name);
 }
 
-function cptp_locate_template($template_names, $load = false, $require_once = true ) {
+function cptp_locate_template($template_names, $load = false, $require_once = true, $slug, $name = null ) {
 	$located = '';
 	foreach ( (array) $template_names as $template_name ) {
 		if ( !$template_name )
@@ -106,6 +106,8 @@ function cptp_locate_template($template_names, $load = false, $require_once = tr
 			break;
 		}
 	}
+
+	$located = apply_filters('cptp_locate_template', $located, $slug, $name);
 
 	if ( $load && '' != $located )
 		load_template( $located, $require_once );
