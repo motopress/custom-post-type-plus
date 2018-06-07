@@ -29,3 +29,9 @@ Custom Post Type Plus plugin is distributed under the terms of the GNU GPL.
 
 
 == Changelog ==
+
+= 1.1.0 =
+* Minor bugfixes and improvements.
+
+= 1.0.0 =
+* Initial release
