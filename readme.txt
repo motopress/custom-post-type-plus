@@ -3,7 +3,7 @@ Contributors: MotoPress
 Donate link: https://motopress.com/
 Tags: custom post type
 Requires at least: 4.0
-Tested up to: 4.9
+Tested up to: 6.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,12 @@ Custom Post Type Plus plugin is distributed under the terms of the GNU GPL.
 
 
 == Changelog ==
+
+= 1.1.2 =
+* Improved compatibility with PHP 8.
+
+= 1.1.1 =
+* Add Amenity CPT.
 
 = 1.1.0 =
 * Minor bugfixes and improvements.

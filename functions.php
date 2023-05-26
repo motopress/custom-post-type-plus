@@ -90,7 +90,7 @@ function cptp_get_template_part( $slug, $name = null ) {
 	cptp_locate_template($templates, true, false, $slug, $name);
 }
 
-function cptp_locate_template($template_names, $load = false, $require_once = true, $slug, $name = null ) {
+function cptp_locate_template($template_names, $load, $require_once, $slug, $name) {
 	$located = '';
 	foreach ( (array) $template_names as $template_name ) {
 		if ( !$template_name )
